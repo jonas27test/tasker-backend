@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasker-backend
+  namespace: tasker
+spec: 
+  selector:
+    matchLabels:
+      app: tasker-backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tasker-backend
+    spec:
+      containers:
+      - image: jonas27test/tasker-backend:v0.1.3
+        args: ["-p",":8080","-dburl","mongodb://mongo.tasker:27017", "-authurl", "http://auth-backend.tasker"]
+        name: tasker-backend
+        ports:
+        - name: tasker-backend
+          containerPort: 8080
+      restartPolicy: Always

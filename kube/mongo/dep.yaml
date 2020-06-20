@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+  namespace: tasker
+spec: 
+  selector:
+    matchLabels:
+      app: mongo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - image: mongo
+        name: mongo
+        command: ["mongod","--bind_ip_all"]
+        ports:
+        - name: mongo
+          containerPort: 27017
+        volumeMounts:
+          - mountPath: /data/db
+            name: mongo-storage
+      volumes:
+      - name: mongo-storage
+        hostPath:
+          path: "/volumes/tasker/mongo"
+      restartPolicy: Always

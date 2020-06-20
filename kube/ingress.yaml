@@ -1,0 +1,23 @@
+# Dont use in production
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: tasker
+  namespace: tasker
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /*
+spec:
+  tls:
+  - hosts:
+    - tasker.jonasburster.de
+    - www.tasker.jonasburster.de
+    secretName: tasker-cert
+  rules:
+  - host: tasker.jonasburster.de
+    http:
+      paths:
+      - path: /*
+        pathType: Prefix
+        backend:
+          serviceName: tasker-backend
+          servicePort: 80
